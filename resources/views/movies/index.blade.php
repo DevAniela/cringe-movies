@@ -12,7 +12,9 @@
             <ul>
                 @foreach($movies as $movie)
                     <li>
-                        <h4>{{ $movie->title }} ({{ $movie->release_year }})</h4>
+                        <a href="{{ route('movies.show', $movie) }}">
+                            <h4>{{ $movie->title }} ({{ $movie->release_year }})</h4>
+                        </a>
 
                         <p>Added by: **{{ $movie->user->name ?? 'Unknown' }}**
                             @if($movie->category)
