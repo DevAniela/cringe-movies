@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Movie;
+use App\Models\Category;
 
 class MovieController extends Controller
 {
@@ -24,7 +26,8 @@ class MovieController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::orderBy('name')->get();
+        return view('movies.create', compact('categories'));
     }
 
     /**
@@ -32,7 +35,18 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string|max:255|unique:movies',
+            'release_year' => 'required|integer|min:1900|max:' . date('Y'),
+            'category_id' => 'required|exists:categories,id',
+            'poster_url' => 'nullable|url',
+            'description' => 'required|string|min:10',
+        ]);
+
+        $validated['user_id'] = Auth::id();
+        $movie = Movie::create($validated);
+
+        return redirect()->route('movies.show', $movie)->with('status', 'Movie added successfully!');
     }
 
     /**
