@@ -61,17 +61,31 @@ class MovieController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Movie $movie)
     {
-        //
+        $this->authorize('update', $movie);
+        $categories = Category::orderBy('name')->get();
+        return view('movies.edit', compact('movie', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Movie $movie)
     {
-        //
+        $this->authorize('update', $movie);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255|unique:movies,title,' . $movie->id,
+            'release_year' => 'required|integer|min:1900|max:' . date('Y'),
+            'category_id' => 'required|exists:categories,id',
+            'poster_url' => 'nullable|url',
+            'description' => 'required|string|min:10',
+        ]);
+
+        $movie->update($validated);
+
+        return redirect()->route('movies.show', $movie)->with('success', 'Movie updated.');
     }
 
     /**
