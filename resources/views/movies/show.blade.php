@@ -17,6 +17,20 @@
             {{ $movie->description }}
         </p>
 
+        @auth
+            @can('update', $movie)
+                <div>
+                    <hr>
+                    <a href="{{ route('movies.edit', $movie) }}">Edit Movie</a>
+                    <form method="POST" action="{{ route('movies.destroy', $movie) }}" onsubmit="return confirm('Are you sure?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Delete Movie</button>
+                    </form>
+                </div>
+            @endcan
+        @endauth
+
         <h4>
             Cringe Ratings ({{ $movie->reviews->count() }})
         </h4>

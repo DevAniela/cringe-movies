@@ -45,7 +45,7 @@ class MoviePolicy
      */
     public function delete(User $user, Movie $movie): bool
     {
-        return false;
+        return $user->id === $movie->user_id;
     }
 
     /**
