@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Movie;
 use App\Models\Category;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class MovieController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
