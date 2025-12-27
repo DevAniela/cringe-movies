@@ -31,6 +31,31 @@
             @endcan
         @endauth
 
+        <hr>
+            @auth
+                <h4>Add Your Very Own Cringe Rating</h4>
+                <form method="POST" action="{{ route('reviews.store', $movie) }}">
+                    @csrf
+                    <div>
+                        <label for="cringe_rating">Rating (1-10):</label>
+                        <input type="number" name="cringe_rating" id="cringe_rating" min="1" max="10" required>
+                    </div>
+
+                    <div>
+                        <label for="content">Your Review:</label>
+                        <textarea name="content" id="content" rows="3" required></textarea>
+                    </div>
+
+                    <button type="submit">Submit Review</button>
+                </form>
+
+                @else
+                    <p>
+                        <a href="{{ route('login') }}">Log in</a> to leave a review.
+                    </p>
+            @endauth
+        </hr>
+
         <h4>
             Cringe Ratings ({{ $movie->reviews->count() }})
         </h4>
