@@ -67,6 +67,17 @@
                         <p>**Rating** {{ $review->cringe_rating }}/10</p>
                         <p>{{ $review->content }}</p>
                         <p>- {{ $review->user->name ?? 'Deleted User' }}</p>
+
+                        @auth
+                            @can('delete', $review)
+                                <form method="POST" action="{{ route('reviews.destroy', $review) }}" onsubmit="return confirm('Delete this review?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit">[Delete My Review]</button>
+                                </form>
+                            @endcan
+                        @endauth
+
                     </li>
                 @endforeach    
             </ul>

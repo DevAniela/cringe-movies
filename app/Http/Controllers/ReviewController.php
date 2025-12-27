@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Movie;
 use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ReviewController extends Controller
 {
+    use AuthorizesRequests;
+
     public function store(Request $request, Movie $movie)
     {
         $validated = $request->validate([
@@ -24,5 +27,12 @@ class ReviewController extends Controller
         ]);
 
         return redirect()->route('movies.show', $movie)->with('status', 'Review posted.');
+    }
+
+    public function destroy(Review $review)
+    {
+        $this->authorize('delete', $review);
+        $review->delete();
+        return back()->with('status', 'Review deleted.');
     }
 }
