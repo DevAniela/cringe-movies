@@ -9,6 +9,17 @@ use Illuminate\Auth\Access\Response;
 class ReviewPolicy
 {
     /**
+     * Determine whether the user is an admin. If not, continue checking for normal users.
+     */
+    public function before(User $user, string $ability): bool|null
+    {
+        if($user->is_admin) {
+            return true;
+        }
+        return null;
+    }
+
+    /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
