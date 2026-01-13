@@ -24,6 +24,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 
     Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
+
+    Route::post('/categories', [AdminController::class, 'storeCategory'])->name('admin.categories.store');
+
+    Route::delete('/categories/{category}', [AdminController::class, 'destroyCategory'])->name('admin.categories.destroy');
 });
 
 Route::resource('movies', MovieController::class);
